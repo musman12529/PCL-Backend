@@ -4,6 +4,8 @@ const { Server } = require('socket.io'); // For WebSocket functionality
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 require('dotenv').config();
+const cors = require('cors');
+
 
 // Importing routes
 const userRoutes = require('./routes/userRoutes');
@@ -14,14 +16,23 @@ const taskRoutes = require('./routes/taskRoutes');
 const app = express();
 const PORT = process.env.PORT || 4000;
 
+
+// Set up CORS for the REST API
+const corsOptions = {
+  origin: 'https://pcl-frontend-imjwm4rju-muhammad-usmans-projects-db0c3854.vercel.app',
+  methods: '*',
+  allowedHeaders: ['Content-Type', 'Authorization'],
+};
+app.use(cors(corsOptions));
+
 // Create the HTTP server and attach Socket.IO
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: "*",
+    origin: "https://pcl-frontend-imjwm4rju-muhammad-usmans-projects-db0c3854.vercel.app", // Frontend URL
+    methods: '*',
   },
 });
-
 // Middleware
 app.use(express.json());
 app.use(bodyParser.json());
